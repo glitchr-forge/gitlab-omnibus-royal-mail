@@ -2,15 +2,39 @@
 
 namespace Omnibus\RoyalMail;
 
-use Omnibus\Core\GatewayFactory;
+use Omnibus\Config;
+use Omnibus\Exception\InvalidConfigException;
+use Omnibus\GatewayFactory;
+use Omnibus\RoyalMail\Action\ShippingAction;
+use Omnibus\RoyalMail\Action\TrackingAction;
+use Symfony\Component\HttpClient\HttpClient;
 
-class RoyalMailGatewayFactory extends GatewayFactory
+/**
+ *   options:
+ *     api_key: '%env(ROYAL_MAIL_API_KEY)%'          # Click & Drop: Settings > Integrations > API
+ *     tracking_client_id: null                      # optional: the Tracking API (developer.royalmail.net)
+ *     tracking_client_secret: null
+ *     rates: [...]                                  # prices from configuration: Click & Drop quotes none
+ *
+ * No pickup points: Royal Mail's are its post offices, not an API.
+ */
+final class RoyalMailGatewayFactory extends GatewayFactory
 {
-    protected function populateConfig(ArrayObject $config)
+    protected function populateConfig(Config $config): void
     {
         $config->defaults([
             'omnibus.factory_name' => 'royal-mail',
-            'omnibus.factory_title' => 'Royal Mail'
+            'omnibus.factory_title' => 'Royal Mail',
+            'omnibus.required_options' => ['api_key'],
+            'tracking_client_id' => null,
+            'tracking_client_secret' => null,
+            'omnibus.api' => function (Config $c) {
+                $http = $this->http ?? (class_exists(HttpClient::class) ? HttpClient::create() : throw new InvalidConfigException('The "royal-mail" gateway needs symfony/http-client.'));
+
+                return new Api($http, (string) $c['api_key'], $c['tracking_client_id'] ?: null, $c['tracking_client_secret'] ?: null);
+            },
+            'omnibus.action.shipping' => new ShippingAction(),
+            'omnibus.action.tracking' => new TrackingAction(),
         ]);
     }
 }
