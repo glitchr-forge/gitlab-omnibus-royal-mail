@@ -23,7 +23,7 @@ final class RoyalMailGatewayFactory extends GatewayFactory
     protected function populateConfig(Config $config): void
     {
         $config->defaults([
-            'omnibus.factory_name' => 'royal-mail',
+            'omnibus.factory_name' => 'royal_mail',
             'omnibus.factory_title' => 'Royal Mail',
             'omnibus.required_options' => ['api_key'],
             'tracking_client_id' => null,

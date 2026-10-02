@@ -52,7 +52,7 @@ final class ShippingAction implements ActionInterface, ApiAwareInterface
         ], static fn ($v) => null !== $v)]]);
         $order = $data['createdOrders'][0] ?? null;
         if (!\is_array($order) || empty($order['orderIdentifier'])) {
-            throw new CarrierException('royal-mail', (string) ($data['failedOrders'][0]['errors'][0]['errorMessage'] ?? 'Click & Drop created no order.'));
+            throw new CarrierException('royal_mail', (string) ($data['failedOrders'][0]['errors'][0]['errorMessage'] ?? 'Click & Drop created no order.'));
         }
         $number = (string) ($order['trackingNumber'] ?? $order['orderIdentifier']);
         $label = null;
@@ -61,6 +61,6 @@ final class ShippingAction implements ActionInterface, ApiAwareInterface
         } catch (CarrierException) {
             // Not yet: a label is made once the postage is applied; the order stays, GetSlip asks again.
         }
-        $request->setResult(new Label('royal-mail', $number, $label, Label::PDF, null, 'https://www.royalmail.com/track-your-item#/tracking-results/'.rawurlencode($number)));
+        $request->setResult(new Label('royal_mail', $number, $label, Label::PDF, null, 'https://www.royalmail.com/track-your-item#/tracking-results/'.rawurlencode($number)));
     }
 }

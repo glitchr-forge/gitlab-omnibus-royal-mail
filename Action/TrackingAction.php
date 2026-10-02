@@ -39,7 +39,7 @@ final class TrackingAction implements ActionInterface, ApiAwareInterface
         }
         usort($events, static fn (TrackingEvent $a, TrackingEvent $b) => $a->at <=> $b->at);
         $status = self::status($piece['summary']['lastEventCode'] ?? null, $piece['summary']['statusDescription'] ?? ($events ? $events[array_key_last($events)]->description : null));
-        $request->setResult(new TrackingModel('royal-mail', $request->trackingNumber, $status, $events));
+        $request->setResult(new TrackingModel('royal_mail', $request->trackingNumber, $status, $events));
     }
 
     private static function status(?string $code, ?string $name): TrackingStatus

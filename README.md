@@ -7,8 +7,8 @@ configuration (`rates`): Click & Drop quotes none.
 ```yaml
 omnibus:
     gateways:
-        royal-mail:
-            factory: royal-mail
+        royal_mail:
+            factory: royal_mail
             options:
                 api_key: '%env(ROYAL_MAIL_API_KEY)%'            # Click & Drop > Settings > Integrations > API
                 tracking_client_id: '%env(RM_TRACKING_ID)%'     # optional: the Tracking API
