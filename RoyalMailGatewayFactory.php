@@ -3,7 +3,6 @@
 namespace Omnibus\RoyalMail;
 
 use Omnibus\Config;
-use Omnibus\Exception\InvalidConfigException;
 use Omnibus\GatewayFactory;
 use Omnibus\RoyalMail\Action\ShippingAction;
 use Omnibus\RoyalMail\Action\TrackingAction;
@@ -29,7 +28,7 @@ final class RoyalMailGatewayFactory extends GatewayFactory
             'tracking_client_id' => null,
             'tracking_client_secret' => null,
             'omnibus.api' => function (Config $c) {
-                $http = $this->http ?? (class_exists(HttpClient::class) ? HttpClient::create() : throw new InvalidConfigException('The "royal-mail" gateway needs symfony/http-client.'));
+                $http = $this->http ?? HttpClient::create();
 
                 return new Api($http, (string) $c['api_key'], $c['tracking_client_id'] ?: null, $c['tracking_client_secret'] ?: null);
             },
