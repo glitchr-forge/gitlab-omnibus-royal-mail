@@ -33,4 +33,4 @@ Credentials: a Click & Drop business account's API key, and - for tracking - an 
 Built from Royal Mail's published API documentation and tested on recorded answers; not yet run
 against the service: that needs the credentials above.
 
-License: LGPL-3.0-or-later.
+License: MIT since 2026-10-09; earlier versions remain published under LGPL-3.0-or-later.
